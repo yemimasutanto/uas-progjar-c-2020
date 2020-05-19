@@ -6,3 +6,6 @@ Kelompok 2
 - Ahmad Syauqi    05111740000093<br>
 - Elkana Hans Widersen   05111740000127<br>
 - Raehan          05111740000154
+
+Link Soal UAS:<br>
+[disini](https://github.com/yemimasutanto/uas-progjar-c-2020/blob/master/Soal-UAS-Progjar-2020.pdf)
