@@ -3,18 +3,17 @@ import time
 import sys
 import asyncore
 import logging
-from async_server import Server as BackendWorker
+from async_server import Server as BackWorker
 
-port_num = 6002
+port_num = 9005
 
 class BackendList:
     def __init__(self):
         self.servers=[]
-        self.ports = [port_num]
         self.current = 0
         self.request = 0
     def running_async(self,port):
-        bw = BackendWorker(port)
+        bw = BackWorker(port)
     def setserver(self,portnumber):
         self.servers.append(('127.0.0.1',portnumber))
     def getserver(self):
@@ -27,7 +26,6 @@ class BackendList:
             self.current=0
         if(self.request % 100 == 0):
             port_num += 1
-            self.ports.append(port_num)
             self.running_async(port_num)
             self.setserver(port_num)
         return s
@@ -62,15 +60,20 @@ class ProcessTheClient(asyncore.dispatcher):
 
 class Server(asyncore.dispatcher):
     def __init__(self,portnumber):
-        global port_num
         asyncore.dispatcher.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.set_reuse_addr()
         self.bind(('',portnumber))
         self.listen(1)
         self.bservers = BackendList()
-        self.bservers.running_async(port_num)
-        self.bservers.setserver(port_num)
+        self.bservers.running_async(9002)
+        self.bservers.running_async(9003)
+        self.bservers.running_async(9004)
+        self.bservers.running_async(9005)
+        self.bservers.setserver(9002)
+        self.bservers.setserver(9003)
+        self.bservers.setserver(9004)
+        self.bservers.setserver(9005)
 
         logging.warning("load balancer running on port {}" . format(portnumber))
 
